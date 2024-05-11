@@ -135,8 +135,8 @@ string serviceVersion = typeof(FuncionarioAppService).Assembly.GetName().Version
 
 builder.Services.AddCustomOpenTelemetry(serviceName, serviceVersion, builder.Configuration);
 
-var activity = new ActivitySource(serviceName, serviceVersion);
-builder.Services.AddScoped<ActivitySource>(x => activity);
+//var activity = new ActivitySource(serviceName, serviceVersion);
+//builder.Services.AddSingleton<ActivitySource>(x => activity);
 
 builder.Services.AddHttpClient(Options.DefaultName);
 

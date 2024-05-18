@@ -1,4 +1,5 @@
-﻿using Cadastro.API.Interfaces;
+﻿using Asp.Versioning;
+using Cadastro.API.Interfaces;
 using Cadastro.API.Models.Request;
 using Cadastro.API.Models.Response;
 using Domain.Entities;

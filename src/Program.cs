@@ -1,3 +1,5 @@
+using Asp.Versioning;
+using Asp.Versioning.ApiExplorer;
 using Cadastro.API.Interfaces;
 using Cadastro.API.Services;
 using Cadastro.Configuracoes;
@@ -8,8 +10,6 @@ using Cadastro.Domain.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Mvc.ApiExplorer;
-using Microsoft.AspNetCore.Mvc.Versioning;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
@@ -20,7 +20,6 @@ using Serilog;
 using Swashbuckle.AspNetCore.SwaggerUI;
 using System;
 using System.Data;
-using System.Diagnostics;
 using System.Text.Json.Serialization;
 
 string MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
@@ -40,21 +39,22 @@ builder.Services.AddControllers()
 
                                 });
 
-builder.Services.AddApiVersioning(x =>
-{
-    x.DefaultApiVersion = new Microsoft.AspNetCore.Mvc.ApiVersion(1, 0);
-    x.AssumeDefaultVersionWhenUnspecified = true;
-    x.ReportApiVersions = true;
-    x.ApiVersionReader = new UrlSegmentApiVersionReader();
-});
+builder.Services.AddApiVersioning(opt =>
+                                {
+                                    opt.DefaultApiVersion = new ApiVersion(1, 0);
+                                    opt.AssumeDefaultVersionWhenUnspecified = true;
+                                    opt.ReportApiVersions = true;
+                                    opt.ApiVersionReader = new UrlSegmentApiVersionReader();
 
-builder.Services.AddVersionedApiExplorer(p =>
-{
-    p.GroupNameFormat = "'v'VVV";
-    p.SubstituteApiVersionInUrl = true;
-    p.AddApiVersionParametersWhenVersionNeutral = true;
-    p.AssumeDefaultVersionWhenUnspecified = true;
-});
+                                })
+                 .AddMvc()
+                 .AddApiExplorer(opt =>
+                                    {
+                                        opt.GroupNameFormat = "'v'VVV";
+                                        opt.SubstituteApiVersionInUrl = true;
+                                        opt.AddApiVersionParametersWhenVersionNeutral = true;
+                                        opt.AssumeDefaultVersionWhenUnspecified = true;
+                                    });
 
 builder.Services.AddEndpointsApiExplorer();
 
